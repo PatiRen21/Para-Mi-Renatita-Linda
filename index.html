@@ -143,5 +143,132 @@
   <img src="IMG_9441.PNG" alt="Recuerdo 6">
 </div>
 
+<section style="text-align: center; margin: 50px 0;">
+    <h2 style="font-family: 'Georgia', serif; font-size: 28px; color: #d63384;">
+        Mi niña a la que amo cantarle canciones para dormir
+    </h2>
+    <p id="cancion" style="font-size: 20px; white-space: pre-wrap; color: #333;"></p>
+</section>
+
+<script>
+    const texto = `A la rurru, niña,\nA la rurru ya,\nDuérmete, mi niña,\nDuérmete ya,\nEsta bella niña,\nQue nacio de día,\nQuiere que la lleven,\nA ver a su Tía,\nEsta bella niña,\nQue nacío de noche,\nQuiere que la lleven a pasear en coche.`;
+    let i = 0;
+
+    function escribir() {
+        if (i < texto.length) {
+            document.getElementById("cancion").textContent += texto.charAt(i);
+            i++;
+            setTimeout(escribir, 100); // velocidad de escritura (ms)
+        }
+    }
+
+    escribir();
+</script>
+
+
+
+
+
+
+<!-- CARTA DESPLEGABLE -->
+<div style="text-align:center; margin-top:20px;">
+    <button onclick="toggleCarta()" style="padding:10px 20px; background-color:pink; border:none; border-radius:10px; cursor:pointer; font-size:16px;">
+        💌 picale aqui cielo 💌
+    </button>
+    <div id="carta" style="display:none; background:rgba(255,182,193,0.8); margin-top:10px; padding:20px; border-radius:15px; max-width:500px; margin:auto;">
+        <h2 style="color:#b30059;">Para ti, mi Renatita ❤️</h2>
+        <p style="font-size:18px; color:#b806b8;">
+            Desde que tu llegaste a mi vida cambiaste todo en mi ser, cambiaste mi forma de ver el mundo,
+             realmente me has hecho estar muy orgulloso de ti mi rena porque eres una mujer sumamente fuerte
+              y realmente te admiro completamente mi amor, no sabes lo afortunado que me haces sentirme por 
+              poder ver a la mujer de mis sueños a mi lado, te amo tanto mi amor te amo con todo mi ser de verdad te amo mi amor, eres el amor de mi vida y 
+              eres mi mundo, te amo mi niña 💖.
+        </p>
+    </div>
+</div>
+
+<!-- BOTÓN DE MÚSICA -->
+<div style="text-align:center; margin-top:20px;">
+    <audio id="musica" loop>
+        <source src="Carla Morrison - Compartir (letra).mp4" type="audio/mp4">
+    </audio>
+    <button onclick="toggleMusica()" style="padding:10px 20px; background-color:#ffcccc; border:none; border-radius:10px; cursor:pointer; font-size:16px;">
+        🎵 Me haces enloquecer mi niña 🎵
+    </button>
+</div>
+
+<!-- EFECTO DE CORAZONES CAYENDO -->
+<canvas id="corazones" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none;"></canvas>
+
+<script>
+// Función carta
+function toggleCarta() {
+    let carta = document.getElementById("carta");
+    carta.style.display = (carta.style.display === "none") ? "block" : "none";
+}
+
+// Función música
+let musica = document.getElementById("musica");
+let musicaOn = false;
+function toggleMusica() {
+    if (!musicaOn) {
+        musica.play();
+        musicaOn = true;
+    } else {
+        musica.pause();
+        musicaOn = false;
+    }
+}
+
+// Corazones cayendo
+const canvas = document.getElementById("corazones");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let hearts = [];
+function Heart(x, y, size, speed) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.speed = speed;
+}
+function drawHeart(x, y, size) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x, y - size / 2, x - size, y - size / 2, x - size, y);
+    ctx.bezierCurveTo(x - size, y + size, x, y + size * 1.5, x, y + size);
+    ctx.bezierCurveTo(x, y + size * 1.5, x + size, y + size, x + size, y);
+    ctx.bezierCurveTo(x + size, y - size / 2, x, y - size / 2, x, y);
+    ctx.fillStyle = "rgba(255,105,180,0.8)";
+    ctx.fill();
+}
+function createHeart() {
+    let x = Math.random() * canvas.width;
+    let size = Math.random() * 10 + 10;
+    let speed = Math.random() * 2 + 1;
+    hearts.push(new Heart(x, -size, size, speed));
+}
+function updateHearts() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < hearts.length; i++) {
+        let h = hearts[i];
+        drawHeart(h.x, h.y, h.size);
+        h.y += h.speed;
+        if (h.y > canvas.height) {
+            hearts.splice(i, 1);
+            i--;
+        }
+    }
+}
+setInterval(createHeart, 300);
+function animate() {
+    updateHearts();
+    requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+
 </body>
 </html>
